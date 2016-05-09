@@ -1,0 +1,10 @@
+{
+ "type": "record",
+ "name": "User",
+ "namespace":"zx.soft.apt.mq.avro.demo",
+ "fields": [
+     {"name": "name", "type": "string"},
+     {"name": "favorite_number",  "type": ["int", "null"]},
+     {"name": "favorite_color", "type": ["string", "null"]}
+ ]
+}

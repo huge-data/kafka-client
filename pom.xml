@@ -1,0 +1,269 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>zx.soft</groupId>
+		<artifactId>common-parent</artifactId>
+		<version>2.0.2</version>
+	</parent>
+
+	<artifactId>kafka-client</artifactId>
+	<version>2.0.1</version>
+	<name>Kafka Client</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<avro.version>1.7.7</avro.version>
+		<powermock.version>1.6.2</powermock.version>
+		<kafka.version>0.9.0.0</kafka.version>
+		<zkclient.version>0.7</zkclient.version>
+	</properties>
+
+	<dependencies>
+		<!-- 工具包 -->
+		<dependency>
+			<groupId>zx.soft</groupId>
+			<artifactId>common-utils</artifactId>
+			<version>2.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>fr.inria.powerapi.sensor</groupId>
+					<artifactId>sensor-cpu-sigar</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.github.jnr</groupId>
+					<artifactId>jnr-posix</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna-platform</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- 对象池 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+		<!-- Zookeeper客户端 -->
+		<dependency>
+			<groupId>zx.soft</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>${zkclient.version}</version>
+		</dependency>
+		<!-- Kafka组件 -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>connect-api</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>connect-file</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>connect-json</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>connect-runtime</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+		<!-- 命令行工具类 -->
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+		</dependency>
+		<!-- Google工具包 -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<!-- 参数解析工具 -->
+		<dependency>
+			<groupId>net.sourceforge.argparse4j</groupId>
+			<artifactId>argparse4j</artifactId>
+			<version>0.5.0</version>
+		</dependency>
+		<!-- 日志包 -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-access</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<!-- 测试 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+			<version>1.52</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- 配置该插件是为了存储Eclipse m2e配置文件，对Maven构建本省没有影响 -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.avro</groupId>
+										<artifactId>avro-maven-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>schema</goal>
+											<goal>protocol</goal>
+											<goal>idl-protocol</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>logback.xml</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/distribution.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Djava.awt.headless=true</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<finalName>${project.artifactId}-${project.version}</finalName>
+
+	</build>
+
+	<repositories>
+		<repository>
+			<id>zxsoft-public</id>
+			<name>Nexus Release Repository</name>
+			<url>http://192.168.3.23:18081/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>all</distribution>
+			<comments>Copyright 2016 (c) Gang Wang - All Right Reserved</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>wgybzb</id>
+			<name>Gang Wang</name>
+			<email>wanggang@zxisl.com</email>
+			<url>http://github.com/wgybzbrobot</url>
+			<roles>
+				<role>ReleaseManager</role>
+				<role>Designer</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>UTC-8</timezone>
+		</developer>
+	</developers>
+
+</project>
