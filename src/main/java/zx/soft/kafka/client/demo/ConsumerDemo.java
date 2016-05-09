@@ -20,7 +20,7 @@ public class ConsumerDemo {
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
 		consumer.subscribe(Arrays.asList("apt-test"));
-		for (int i = 0; i < 300; i++) {
+		for (int i = 0; i < 1000; i++) {
 			ConsumerRecords<String, String> records = consumer.poll(100);
 			System.err.println(i + ": " + records.count());
 			for (ConsumerRecord<String, String> record : records) {

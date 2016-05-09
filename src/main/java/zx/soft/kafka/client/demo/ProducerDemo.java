@@ -15,7 +15,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
  *
  * 测试环境：
  * 1、apt-test:24个分区，没有复制；
- * 2、apt-test1:1个分区，存在复制；
+ * 2、apt-test1:1个分区，没有复制；
  *
  * @author wanggang
  *
@@ -35,18 +35,20 @@ public class ProducerDemo {
 		props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		// Producer
 		Producer<String, String> producer = new KafkaProducer<>(props);
+		// 指定分区
+		int partitionNum = 10;
 		/* message */
 		Boolean isAsync = Boolean.FALSE; // 是否异步
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10000; i++) {
 			if (isAsync) { // 发送异步消息
-				producer.send(new ProducerRecord<String, String>("apt-test", i + "hello", i
-						+ "world"),
-						new DemoCallBack(System.currentTimeMillis(), i, Integer.toString(i)));
+				producer.send(new ProducerRecord<String, String>("apt-test", partitionNum, i
+						+ "hello", i + "world"), new DemoCallBack(System.currentTimeMillis(), i,
+						Integer.toString(i)));
 			} else { // 发送同步消息
 				try {
 					producer.send(
-							new ProducerRecord<String, String>("apt-test", i + "hello", i + "world"))
-							.get();
+							new ProducerRecord<String, String>("apt-test", partitionNum, i
+									+ "hello", i + "world")).get();
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
